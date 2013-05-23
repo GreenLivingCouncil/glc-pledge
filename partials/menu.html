@@ -1,0 +1,10 @@
+<div class="container">
+    <h1>GLC ePledge Events List</h1>
+    <div class="row">
+        <div class="span6">
+            <div style="padding-top: 20px" ng-repeat="(code,event) in eventData">
+                <a href="#/{{code}}" class="btn input-block-level">{{event.name}}</a>
+            </div>
+        </div>
+    </div>
+</div>

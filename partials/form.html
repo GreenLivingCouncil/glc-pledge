@@ -1,0 +1,80 @@
+<div class="row">
+    <div class="span8 offset1">
+        <h1>{{eventData.name}} Pledge</h1>
+        <div id="pledgeText">
+            {{eventData.pledgeText}}
+            <div ng-repeat="item in eventData.pledgeItems">
+                &nbsp;<input type="checkbox" checked />&nbsp; {{item}}
+            </div>
+        </div>
+        <br/>
+        <form name="pledgeForm" ng-submit="submit()">
+            <table>
+                <tr>
+                    <td>Name:</td>
+                    <td>{{user.name}}&nbsp;&nbsp;<input type="checkbox" ng-model="user.private" /> Keep me anonymous.</td>
+                </tr>
+                <tr>
+                    <td>Email:</td>
+                    <td><input type="email" class="input-block-level" ng-model="user.email" required /></td>
+                </tr>
+                <tr>
+                    <td>Team:</td>
+                    <td><select ng-model="user.teamId" ng-options="team.id as team.name for team in eventData.teamList" class="input-block-level" required></select></td>
+                    <td><span class="error">&nbsp;{{teamError}}</span></td>
+                </tr>
+                <tr>
+                    <td>Referrer:</td>
+                    <td>
+                        <div class="input-append">
+                            <input type="text" class="input-block-level" ng-model="user.referrer" placeholder="referrer's SUNet ID (optional)" />
+                            <a href="http://who.stanford.edu/stanford" class="btn" target="_blank">Lookup</a>
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="2">
+                        Leave a message!<br/>
+                        <textarea ng-model="user.comments" class="input-block-level" placeholder="(optional)"></textarea>
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="2">
+                        <button class="btn btn-large btn-primary input-block-level" type="submit">Pledge!</button>
+                    </td>
+                </tr>
+            </table>
+        </form>
+        <hr/>
+        <div>
+            {{eventData.auxMessage}}
+        </div>
+        <br/>
+        <div>
+            <a class="btn input-block-level" href="#/{{eventCode}}/counts">See current standings</a><br/>
+            <a class="btn input-block-level" href="#/{{eventCode}}/referrals">Create referral link</a><br/>
+            <a class="btn input-block-level" href="#/{{eventCode}}/referrals">See how many people you've referred</a><br/>
+            <a class="btn input-block-level" href="{{eventData.link}}">Visit the event page for info, tips and more!</a><br/>
+        </div>
+    </div>
+    <div class="span4">
+        <h3>Updates</h3>
+        <div class="alert" ng-repeat="pledge in recentPledges">
+            <b>{{pledge.name}} from {{getTeamName(pledge.teamId)}}</b>
+            <br/>just took the pledge {{pledge.hoursAgo}} hours ago.
+            <table ng-show="pledge.comments">
+                <tr valign="top">
+                    <td>
+                        <i class="icon-bullhorn"></i>&nbsp;
+                    </td>
+                    <td>
+                        <i>{{pledge.comments}}</i>
+                    </td>
+                </tr>
+            </table>
+        </div>
+            
+    </div>
+</div>
+<div class="container" ng-bind-html-unsafe="formResponse">
+</div>

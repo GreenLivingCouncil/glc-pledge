@@ -1,0 +1,16 @@
+<div class="container">
+    <h1>{{eventData.name}} Pledge Standings</h1>
+    <table class="table">
+        <tr>
+            <th>Team</th>
+            <th>Number of Pledges</th>
+            <th>Percentage Pledged</th>
+        </tr>
+        <tr ng-repeat="(teamId,count) in counts">
+            <td>{{getTeamName(teamId)}}</td>
+            <td>{{count}}</td>
+            <td>{{getTeamPercent(teamId,count)}}%</td>
+        </tr>
+    </table>
+    Teams that do not have pledges yet are not displayed. <a href="#/{{eventCode}}/form">Get pledging!</a>
+</div>

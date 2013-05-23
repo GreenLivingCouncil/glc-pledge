@@ -1,0 +1,29 @@
+<!doctype html>
+<html lang="en" ng-app="PledgeApp">
+<head>
+  <meta charset="utf-8">
+  <title>GLC ePledge Platform</title>
+  <link rel="stylesheet" href="css/app.css"/>
+  <link rel="stylesheet" href="css/bootstrap.css">
+  <script src="js/config.js"></script>
+</head>
+<body>
+
+  <div ng-view></div>
+
+  <div class="row">
+      <div class="span12 offset1">
+          <hr/>
+          GLC ePledge Platform v<span app-version></span><br/>
+          Problems? Contact the webmaster at sckoo [at] stanford [dot] edu.
+      </div>
+  </div>
+
+  <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.0.4/angular.min.js"></script>
+  <script src="js/app.js"></script>
+  <script src="js/services.js"></script>
+  <script src="js/controllers.js"></script>
+  <script src="js/filters.js"></script>
+  <script src="js/directives.js"></script>
+</body>
+</html>
