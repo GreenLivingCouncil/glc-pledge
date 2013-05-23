@@ -18,7 +18,7 @@ def getForm():
 
 def firstTimePledge(conn, pledge):
     """Returns True if it is first time that this user is pledging, and False otherwise."""
-    #return True # uncomment this to allow multiple pledges per user
+    return True # uncomment this to allow multiple pledges per user
     return not bool(conn.execute("select * from pledges where sunetId=:sunetId and eventId=:eventId", pledge).fetchall())
 
 def insertPledge(conn, pledge):
@@ -51,7 +51,7 @@ response["success"] = form is not None
 if response["success"]:
     conn = sqlite3.connect("pledges.db")
     response["firstTime"] = firstTimePledge(conn, form)
-    if not response["firstTime"]:
+    if response["firstTime"]:
         response["success"] = insertPledge(conn, form)
 # Generate JSON response
 print "Content-Type: application/json"
