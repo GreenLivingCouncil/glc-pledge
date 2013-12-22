@@ -1,0 +1,9 @@
+# Ignore user-specific data/config files
+*.db
+config.js
+
+# Sublime temp files
+._*
+
+# Mac files
+.DS_Store
