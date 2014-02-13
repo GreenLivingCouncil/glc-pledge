@@ -1,21 +1,15 @@
 #!/usr/bin/python
-import sqlite3
 import cgi
 import json
-# import cgitb
-# cgitb.enable()
+import pledge
 
 # TODO: provide the real name of the referrer
 
-## Main script ##
 form = cgi.FieldStorage()
-# Open connection to sqlite db to get the referral count
-conn = sqlite3.connect("pledges.db")
-entry = conn.execute("select count from referralCounts where referrer=?", (form.getfirst("referrer"),) ).fetchone()
-# Build response, fill in zero if entry does not exist yet for referrer
-response = { "count" : 0 }
-if entry:
-    response["count"] = int(entry[0])
+referrer = form.getfirst("referrer")
+count = pledge.get_referral_counts(referrer)
+response = {"count" : count}
+
 # Generate JSON response
 print "Content-Type: application/json"
 print

@@ -8,12 +8,12 @@ import datetime
 
 ## Helper Functions ##
 
-def getForm():
-    """Loads (and validates? TODO) form data. Returns the data as a dict."""
+def get_pledge():
+    """Loads form data. Returns the data as a dict, or returns None if cannot parse JSON."""
     try:
         result = json.loads(cgi.FieldStorage().value)
         return result
-    except:
+    except (TypeError, ValueError):
         return None
 
 def firstTimePledge(conn, pledge):
