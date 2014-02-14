@@ -41,6 +41,7 @@ function FormCtrl($scope, $http, $location, $routeParams) {
         success(function(data, status) { 
             $scope.status = status; 
             $scope.formResponse = data; 
+            console.log(data);
             if ($scope.formResponse.success) {
                 $location.path("/" + $routeParams.event + "/thanks/" + (+$scope.formResponse.firstTime));
             } else {
