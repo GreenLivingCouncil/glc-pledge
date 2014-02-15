@@ -57,11 +57,11 @@
             <a class="btn input-block-level" href="{{eventData.link}}">Visit the event page for info, tips and more!</a><br/>
         </div>
     </div>
-    <div class="span4">
+    <div ng-controller="UpdatesCtrl" class="span4">
         <h3>Updates</h3>
         <div class="alert" ng-repeat="pledge in recentPledges">
-            <b>{{pledge.name}} from {{getTeamName(pledge.teamId)}}</b>
-            <br/>just took the pledge {{pledge.hoursAgo}} hours ago.
+            <strong>{{pledge.name}}</strong> from <strong>{{getTeamName(pledge.teamId)}}</strong>
+            <br/>took the pledge {{pledge.isoDateString | fromNow}}.
             <table ng-show="pledge.comments">
                 <tr valign="top">
                     <td>

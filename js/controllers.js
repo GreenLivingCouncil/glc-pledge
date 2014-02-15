@@ -21,10 +21,6 @@ function FormCtrl($scope, $http, $location, $routeParams) {
             $scope.user.referrer = '';
         }
     });
-    // Get recent pledge list
-    $http.get(_paths.cgiBin + 'getRecentPledges.py?limit=8&eventId=' + $scope.eventData.id).success(function(data) {
-        $scope.recentPledges = data.pledges;
-    });
     // Form submission callback
     $scope.submit = function() {
         // Display warning and abort submission if no residence selected.
@@ -53,11 +49,18 @@ function FormCtrl($scope, $http, $location, $routeParams) {
             $scope.status = status; 
             alert("Form submission failed. Please refresh and try again.");
         }); 
-    }
+    };
     // Function to get the team name TODO: this is copy-pasta!!
     $scope.getTeamName = function(teamId) {
         return this.eventData.teamList[parseInt(teamId)].name;
-    }
+    };
+}
+
+function UpdatesCtrl($scope, $http) {
+    // Get recent pledge list
+    $http.get(_paths.cgiBin + 'getRecentPledges.py?limit=8&eventId=' + $scope.eventData.id).success(function(data) {
+        $scope.recentPledges = data.pledges;
+    });
 }
 
 function ThanksCtrl($scope, $routeParams, $http) {

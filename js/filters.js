@@ -7,4 +7,10 @@ angular.module('PledgeApp.filters', []).
     return function(text) {
       return String(text).replace(/\%VERSION\%/mg, version);
     }
-  }]);
+  }]).
+  filter('fromNow', function() {
+    return function(dateString) {
+        var date = new Date(dateString);
+        return moment(date).fromNow();
+    }
+  });
