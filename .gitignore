@@ -2,7 +2,7 @@
 *.db
 config.js
 
-# Editor temp files
+# temp files
 ._*
 .*.swp
 

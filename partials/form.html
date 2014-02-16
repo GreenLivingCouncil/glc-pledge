@@ -1,6 +1,41 @@
 <div class="row">
-    <div class="span8 offset1">
-        <h1>{{eventData.name}} Pledge</h1>
+    <div class="span4 offset1">
+        <h3>{{eventData.name}}</h3>
+        <div class="thumbnail">
+            <img src="{{eventData.logoSrc}}" />
+            
+        </div>
+        <h1></h1>
+        
+        <div>
+            {{eventData.auxMessage}}
+        </div>
+        <br/>
+        <div>
+            <a href="#/{{eventCode}}/referrals">Create referral link</a><br/>
+            <a href="#/{{eventCode}}/referrals">See how many people you've referred</a><br/>
+            <a href="{{eventData.link}}">Visit the event page for info, tips and more!</a><br/>
+        </div>
+    </div>
+    <div class="span4" ng-show="user.hasPledged" ng-controller="CountsCtrl">
+        <h3>Pledge Counts</h3>
+        <table class="table">
+        <tr>
+            <th>Team</th>
+            <th># Pledges</th>
+            <th>% Pledged</th>
+        </tr>
+        <tr ng-repeat="(teamId,count) in counts">
+            <td>{{getTeamName(teamId)}}</td>
+            <td>{{count}}</td>
+            <td>{{getTeamPercent(teamId,count)}}%</td>
+        </tr>
+    </table>
+    <small>Teams that do not have pledges yet are not displayed.</small>
+    </div>
+
+    <div class="span4" ng-hide="user.hasPledged">
+        <h3>Take the Pledge</h3>
         <div id="pledgeText">
             {{eventData.pledgeText}}
             <div ng-repeat="item in eventData.pledgeItems">
@@ -8,11 +43,12 @@
             </div>
         </div>
         <br/>
+
         <form name="pledgeForm" ng-submit="submit()">
-            <table>
+            <table width="100%">
                 <tr>
                     <td>Name:</td>
-                    <td>{{user.name}}&nbsp;&nbsp;<input type="checkbox" ng-model="user.private" /> Keep me anonymous.</td>
+                    <td>{{user.name}}&nbsp;&nbsp;<input type="checkbox" ng-model="user.private" /> anonymous</td>
                 </tr>
                 <tr>
                     <td>Email:</td>
@@ -26,10 +62,10 @@
                 <tr>
                     <td>Referrer:</td>
                     <td>
-                        <div class="input-append">
+                        <!--<div class="input-append">-->
                             <input type="text" class="input-block-level" ng-model="user.referrer" placeholder="referrer's SUNet ID (optional)" />
-                            <a href="http://who.stanford.edu/stanford" class="btn" target="_blank">Lookup</a>
-                        </div>
+                            <!--<a href="http://who.stanford.edu/stanford" class="btn" target="_blank">Lookup</a>
+                        </div>-->
                     </td>
                 </tr>
                 <tr>
@@ -45,21 +81,10 @@
                 </tr>
             </table>
         </form>
-        <hr/>
-        <div>
-            {{eventData.auxMessage}}
-        </div>
-        <br/>
-        <div>
-            <a class="btn input-block-level" href="#/{{eventCode}}/counts">See current standings</a><br/>
-            <a class="btn input-block-level" href="#/{{eventCode}}/referrals">Create referral link</a><br/>
-            <a class="btn input-block-level" href="#/{{eventCode}}/referrals">See how many people you've referred</a><br/>
-            <a class="btn input-block-level" href="{{eventData.link}}">Visit the event page for info, tips and more!</a><br/>
-        </div>
     </div>
     <div ng-controller="UpdatesCtrl" class="span4">
         <h3>Updates</h3>
-        <div class="alert" ng-repeat="pledge in recentPledges">
+        <div class="alert alert-info" ng-repeat="pledge in recentPledges">
             <strong>{{pledge.name}}</strong> from <strong>{{getTeamName(pledge.teamId)}}</strong>
             <br/>took the pledge {{pledge.isoDateString | fromNow}}.
             <table ng-show="pledge.comments">

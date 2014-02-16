@@ -10,7 +10,8 @@ function FormCtrl($scope, $http, $location, $routeParams) {
     $scope.eventData = _events[$routeParams.event];
     // Get user data through WebAuth.
     // The resulting user object should at least contain the fields "name", "email".
-    $http.get(_paths.cgiBin + 'getWebAuthToken.py').success(function(data) {
+    $http.get(_paths.cgiBin + 'getWebAuthToken.py').
+    success(function(data) {
         $scope.user = data;
         $scope.user.private = false;
         $scope.user.comments = '';
@@ -20,6 +21,11 @@ function FormCtrl($scope, $http, $location, $routeParams) {
         } else {
             $scope.user.referrer = '';
         }
+    });
+
+    $http.get(_paths.cgiBin + 'hasPledged.py?eventId=' + $scope.eventData.id).
+    success(function(data) {
+        $scope.user.hasPledged = data.hasPledged;
     });
     // Form submission callback
     $scope.submit = function() {
@@ -58,7 +64,7 @@ function FormCtrl($scope, $http, $location, $routeParams) {
 
 function UpdatesCtrl($scope, $http) {
     // Get recent pledge list
-    $http.get(_paths.cgiBin + 'getRecentPledges.py?limit=8&eventId=' + $scope.eventData.id).success(function(data) {
+    $http.get(_paths.cgiBin + 'getRecentPledges.py?limit=5&eventId=' + $scope.eventData.id).success(function(data) {
         $scope.recentPledges = data.pledges;
     });
 }

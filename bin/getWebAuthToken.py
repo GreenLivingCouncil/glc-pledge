@@ -1,18 +1,10 @@
 #!/usr/bin/python
-import cgi
-import os
-import json
-# import cgitb
-# cgitb.enable()
+from pledger import json_get_view, WebAuthToken
 
-# Build collect WebAuth login info from environment variables
-response = {
-        "sunetId": os.environ['WEBAUTH_USER'],
-        "email"  : os.environ['WEBAUTH_LDAP_MAIL'],
-        "name"   : os.environ['WEBAUTH_LDAP_DISPLAYNAME']
+@json_get_view
+def get_web_auth_token():
+    return {
+        "sunetId": WebAuthToken.sunet_id,
+        "email"  : WebAuthToken.email,
+        "name"   : WebAuthToken.name
         }
-
-# Emit JSON message
-print "Content-Type:application/json"
-print 
-print json.dumps(response, sort_keys=True, indent=4, separators=(',', ': '))
