@@ -6,27 +6,28 @@ function FormCtrl($scope, $http, $location, $routeParams) {
     $scope.eventCode = $routeParams.event;
     $scope.formMethod = 'POST';
     $scope.teamError = '';
+    $scope.adminMode = ($routeParams.referrer == "admin");
     // Get event-specific information from the config
     $scope.eventData = _events[$routeParams.event];
     // Get user data through WebAuth.
     // The resulting user object should at least contain the fields "name", "email".
     $http.get(_paths.cgiBin + 'getWebAuthToken.py').
     success(function(data) {
-        $scope.user = data;
+        $scope.user = ($scope.adminMode) ? {} : data;
         $scope.user.private = false;
         $scope.user.comments = '';
         $scope.user.eventId = $scope.eventData.id;
-        if ($routeParams.referrer) {
-            $scope.user.referrer = $routeParams.referrer;
-        } else {
-            $scope.user.referrer = '';
-        }
+        $scope.user.referrer = ($routeParams.referrer) ? 
+            ($scope.adminMode ? data.sunetId : $routeParams.referrer) : '';
     });
 
-    $http.get(_paths.cgiBin + 'hasPledged.py?eventId=' + $scope.eventData.id).
-    success(function(data) {
-        $scope.user.hasPledged = data.hasPledged;
-    });
+    if (!$scope.adminMode) {
+        $http.get(_paths.cgiBin + 'hasPledged.py?eventId=' + $scope.eventData.id).
+        success(function(data) {
+            $scope.hasPledged = data.hasPledged;
+        });
+    }
+
     // Form submission callback
     $scope.submit = function() {
         // Display warning and abort submission if no residence selected.
@@ -42,10 +43,10 @@ function FormCtrl($scope, $http, $location, $routeParams) {
         }). 
         success(function(data, status) { 
             $scope.status = status; 
-            $scope.formResponse = data; 
-            console.log(data);
-            if ($scope.formResponse.success) {
-                $location.path("/" + $routeParams.event + "/thanks/" + (+$scope.formResponse.firstTime));
+            //$scope.formResponse = data; 
+            //console.log(data);
+            if (data.success) {
+                location.reload();
             } else {
                 alert("Form submission failed. Please refresh and try again.");
             }
@@ -107,7 +108,7 @@ function RefCountsCtrl($scope, $routeParams, $http) {
         $scope.person = "people";
 	$scope.refURL = encodeURIComponent("/group/glc/pledge/#/") + $scope.eventCode + encodeURIComponent("/form/") + $scope.referrer;
         // Get count
-        $http.get(_paths.cgiBin + '/getReferralCount.py?referrer=' + $scope.referrer).success(function(data) {
+        $http.get(_paths.cgiBin + '/getReferralCount.py').success(function(data) {
             $scope.count = parseInt(data.count);
             if ($scope.count == 1) {
                 $scope.person = "person";

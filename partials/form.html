@@ -1,9 +1,10 @@
 <div class="row">
     <div class="span4 offset1">
         <h3>{{eventData.name}}</h3>
-        <div class="thumbnail">
-            <img src="{{eventData.logoSrc}}" />
-            
+        <div>
+            <a href="{{eventData.link}}" class="thumbnail">
+                <img src="{{eventData.logoSrc}}" />
+            </a>
         </div>
         <h1></h1>
         
@@ -12,34 +13,58 @@
         </div>
         <br/>
         <div>
-            <a href="#/{{eventCode}}/referrals">Create referral link</a><br/>
-            <a href="#/{{eventCode}}/referrals">See how many people you've referred</a><br/>
             <a href="{{eventData.link}}">Visit the event page for info, tips and more!</a><br/>
         </div>
+        <br/>
+        <div ng-controller="MenuCtrl">
+            <h4>Jump to another pledge:</h4>
+            <div ng-repeat="(code,event) in eventData" ng-show="event.active">
+                <a href="#/{{code}}" >{{event.name}}</a>
+            </div>
+        </div>
+
     </div>
-    <div class="span4" ng-show="user.hasPledged" ng-controller="CountsCtrl">
-        <h3>Pledge Counts</h3>
-        <table class="table">
-        <tr>
-            <th>Team</th>
-            <th># Pledges</th>
-            <th>% Pledged</th>
-        </tr>
-        <tr ng-repeat="(teamId,count) in counts">
-            <td>{{getTeamName(teamId)}}</td>
-            <td>{{count}}</td>
-            <td>{{getTeamPercent(teamId,count)}}%</td>
-        </tr>
-    </table>
-    <small>Teams that do not have pledges yet are not displayed.</small>
+    <div class="span4" ng-show="hasPledged" >
+        <h3>My Pledge</h3>
+        <div>
+            <p><strong>{{eventData.pledgeText}}</strong></p>
+            <div ng-repeat="item in eventData.pledgeItems">
+                &nbsp;<i class="icon-leaf"></i>&nbsp; {{item}}
+            </div>
+        </div>
+        <br/>
+        <div ng-controller="CountsCtrl">
+            <h3>Pledge Counts</h3>
+            <table class="table">
+                <tr>
+                    <th>Team</th>
+                    <th># Pledges</th>
+                    <th>% Pledged</th>
+                </tr>
+                <tr ng-repeat="(teamId,count) in counts">
+                    <td>{{getTeamName(teamId)}}</td>
+                    <td>{{count}}</td>
+                    <td>{{getTeamPercent(teamId,count)}}%</td>
+                </tr>
+            </table>
+            <small>Teams that do not have pledges yet are not displayed.</small>
+        </div>
+        <br/>
+        <div ng-controller="RefCountsCtrl">
+            <h4>You have referred {{count}} {{person}}.</h4>
+            <div>
+                Invite your friends to pledge and gain referrals!<br/>
+                <input type="text" class="input-block-level" value="http://www.stanford.edu/group/glc/cgi-bin/redirect/?t={{refURL}}" />
+            </div>
+        </div>
     </div>
 
-    <div class="span4" ng-hide="user.hasPledged">
+    <div class="span4" ng-hide="hasPledged">
         <h3>Take the Pledge</h3>
         <div id="pledgeText">
-            {{eventData.pledgeText}}
+            <p><strong>{{eventData.pledgeText}}</strong></p>
             <div ng-repeat="item in eventData.pledgeItems">
-                &nbsp;<input type="checkbox" checked />&nbsp; {{item}}
+                &nbsp;<input type="checkbox" />&nbsp;{{item}}
             </div>
         </div>
         <br/>
@@ -48,7 +73,16 @@
             <table width="100%">
                 <tr>
                     <td>Name:</td>
-                    <td>{{user.name}}&nbsp;&nbsp;<input type="checkbox" ng-model="user.private" /> anonymous</td>
+                    <td ng-hide="adminMode">
+                        {{user.name}}&nbsp;&nbsp;<input type="checkbox" ng-model="user.private" /> anonymous
+                    </td>
+                    <td ng-show="adminMode">
+                        <input type="text" class="input-block-level" ng-model="user.name" required />
+                    </td>
+                </tr>
+                <tr ng-show="adminMode">
+                    <td>SUNet ID:</td>
+                    <td><input type="text" class="input-block-level" ng-model="user.sunetId" required /></td>
                 </tr>
                 <tr>
                     <td>Email:</td>

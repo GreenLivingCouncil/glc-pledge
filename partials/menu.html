@@ -2,7 +2,7 @@
     <h1>GLC ePledge Events List</h1>
     <div class="row">
         <div class="span6">
-            <div style="padding-top: 20px" ng-repeat="(code,event) in eventData">
+            <div style="padding-top: 20px" ng-repeat="(code,event) in eventData" ng-show="event.active">
                 <a href="#/{{code}}" class="btn input-block-level">{{event.name}}</a>
             </div>
         </div>

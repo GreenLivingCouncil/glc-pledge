@@ -9,9 +9,11 @@ from collections import namedtuple
 
 # Global Constants/Variables
 DEBUG          = True
-ALLOW_MULTIPLE = True
+ALLOW_MULTIPLE = False
+ADMINS         = ["sashab", "ibarnard", "sckoo"]
 LOG_PATH       = "pledger.log"
 DB_PATH        = "pledges.db"
+SCHEMA_PATH    = "sql/setup.sql"
 conn           = None
 
 def __init__():
@@ -24,10 +26,16 @@ def __init__():
         import cgitb
         cgitb.enable()
 
+    init_db = not os.path.exists(DB_PATH)
     log_level = logging.DEBUG if DEBUG else logging.INFO
     logging.basicConfig(filename=LOG_PATH, level=log_level)
     conn = sqlite3.connect(DB_PATH)
     conn.row_factory = namedtuple_factory
+
+    if init_db:
+        with open(SCHEMA_PATH) as f:
+            conn.executescript(f.read())
+
 
 class WebAuthToken(object):
     sunet_id = os.environ['WEBAUTH_USER']
@@ -140,7 +148,14 @@ def submit_pledge(pledge):
     if any((field not in pledge) for field in PLEDGE_FIELDS):
         return False
 
+    admin_mode = (WebAuthToken.sunet_id in ADMINS)
+
+    if not admin_mode and has_pledged(WebAuthToken.sunet_id, pledge['eventId']):
+        return False
+
     pledge['dateString'] = str(datetime.datetime.utcnow())
+    if not admin_mode and pledge['sunetId'] != WebAuthToken.sunet_id:
+        return False
 
     try:
         with conn:
