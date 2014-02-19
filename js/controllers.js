@@ -73,7 +73,7 @@ function UpdatesCtrl($scope, $http) {
 function ThanksCtrl($scope, $routeParams, $http) {
     $http.get(_paths.cgiBin + 'getWebAuthToken.py').success(function(data) {
         $scope.sunetId = data.sunetId;
-	$scope.refURL = encodeURIComponent("/group/glc/pledge/#/") + $scope.eventCode + encodeURIComponent("/form/") + $scope.sunetId;
+	$scope.refURL = encodeURIComponent("/group/glc/cgi-bin/pledge/#/") + $scope.eventCode + encodeURIComponent("/form/") + $scope.sunetId;
     });
     $scope.eventCode = $routeParams.event;
     if (parseInt($routeParams.firstTime)) {
@@ -106,7 +106,7 @@ function RefCountsCtrl($scope, $routeParams, $http) {
     $http.get(_paths.cgiBin + '/getWebAuthToken.py').success(function(data) {
         $scope.referrer = data.sunetId;
         $scope.person = "people";
-	$scope.refURL = encodeURIComponent("/group/glc/pledge/#/") + $scope.eventCode + encodeURIComponent("/form/") + $scope.referrer;
+	$scope.refURL = encodeURIComponent("/group/glc/cgi-bin/pledge/#/") + $scope.eventCode + encodeURIComponent("/form/") + $scope.referrer;
         // Get count
         $http.get(_paths.cgiBin + '/getReferralCount.py').success(function(data) {
             $scope.count = parseInt(data.count);
