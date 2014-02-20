@@ -65,7 +65,7 @@ function FormCtrl($scope, $http, $location, $routeParams) {
 
 function UpdatesCtrl($scope, $http) {
     // Get recent pledge list
-    $http.get(_paths.cgiBin + 'getRecentPledges.py?limit=5&eventId=' + $scope.eventData.id).success(function(data) {
+    $http.get(_paths.cgiBin + 'getRecentPledges.py?limit=8&eventId=' + $scope.eventData.id).success(function(data) {
         $scope.recentPledges = data.pledges;
     });
 }
