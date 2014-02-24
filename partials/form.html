@@ -24,7 +24,7 @@
         </div>
 
     </div>
-    <div class="span4" ng-show="hasPledged" >
+    <div class="span4" ng-show="hasPledged || !eventData.active" >
         <h3>My Pledge</h3>
         <div>
             <p><strong>{{eventData.pledgeText}}</strong></p>
@@ -59,7 +59,7 @@
         </div>
     </div>
 
-    <div class="span4" ng-hide="hasPledged">
+    <div class="span4" ng-hide="hasPledged || !eventData.active">
         <h3>Take the Pledge</h3>
         <div id="pledgeText">
             <p><strong>{{eventData.pledgeText}}</strong></p>

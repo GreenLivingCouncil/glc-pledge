@@ -154,13 +154,13 @@ def submit_pledge(pledge):
         logging.error("sqlite3: " + str(e))
         return False
 
-def draw_random_pledge(event_id):
+def draw_random_pledges(event_id, num_pledges):
     """
     Choose random pledge from the given event and return it.
     """
-    event_id = str(event_id)
-    cur = conn.execute("SELECT * FROM pledges WHERE eventId=? ORDER BY RANDOM() LIMIT 1", event_id)
-    return cur.fetchone()
+    t = (str(event_id), str(num_pledges))
+    cur = conn.execute("SELECT * FROM pledges WHERE eventId=? ORDER BY RANDOM() LIMIT ?", t)
+    return cur.fetchall()
 
 
 __init__()
