@@ -88,6 +88,8 @@ function CountsCtrl($scope, $routeParams, $http) {
     // Get event-specific information from the config
     $scope.eventData = _events[$scope.eventCode];
     $http.get(_paths.cgiBin + 'getPledgeCounts.py?eventId=' + $scope.eventData.id).success(function(data) {
+        // merge with config so that empty dorms are shown, and 
+        // prevent issues with malformed data
         $scope.counts = data;
     });
     // Function to get the team name
@@ -95,6 +97,7 @@ function CountsCtrl($scope, $routeParams, $http) {
         return this.eventData.teamList[parseInt(teamId)].name;
     }
     // Function to get the team percentage pledged
+    // TODO turn into filter?
     $scope.getTeamPercent = function(teamId, count) {
         var result = parseFloat(count) / parseFloat(this.eventData.teamList[parseInt(teamId)].size);
         return (Math.round(result*100)).toString();
