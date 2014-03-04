@@ -1,6 +1,7 @@
-# Ignore user-specific data/config files
+# Ignore user-specific data, config, and log files
 *.db
 config.js
+*.log
 
 # temp files
 ._*
