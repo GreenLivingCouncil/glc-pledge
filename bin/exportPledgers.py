@@ -6,6 +6,7 @@ def split_name(name):
     tokens = name.split(' ')
     join = lambda l: ' '.join(l)
 
+    """
     if len(tokens) > 2:
         print "How do I split this name?"
         for i in range(1, len(tokens)):
@@ -19,7 +20,8 @@ def split_name(name):
             except:
                 pass
     else:
-        split_i = 1
+    """
+    split_i = 1
 
     return (join(tokens[:split_i]), join(tokens[split_i:]))
 
